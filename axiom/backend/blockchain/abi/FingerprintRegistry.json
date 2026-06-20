@@ -1,0 +1,23 @@
+{
+  "abi": [
+    {
+      "type": "function",
+      "name": "publishFingerprint",
+      "stateMutability": "nonpayable",
+      "inputs": [
+        { "name": "hashValue", "type": "string" },
+        { "name": "language", "type": "string" },
+        { "name": "framework", "type": "string" },
+        { "name": "severity", "type": "string" }
+      ],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "getFingerprintCount",
+      "stateMutability": "view",
+      "inputs": [],
+      "outputs": [{ "name": "", "type": "uint256" }]
+    }
+  ]
+}

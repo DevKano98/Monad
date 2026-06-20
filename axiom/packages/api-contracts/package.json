@@ -1,0 +1,14 @@
+{
+  "name": "@monad-axiom/api-contracts",
+  "version": "1.0.0",
+  "description": "API request/response contracts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "@monad-axiom/shared-types": "*"
+  }
+}

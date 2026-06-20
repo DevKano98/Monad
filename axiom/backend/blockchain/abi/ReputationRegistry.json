@@ -1,0 +1,16 @@
+{
+  "abi": [
+    {
+      "type": "function",
+      "name": "updateReputation",
+      "stateMutability": "nonpayable",
+      "inputs": [
+        { "name": "wallet", "type": "address" },
+        { "name": "score", "type": "int256" },
+        { "name": "successfulFixes", "type": "uint256" },
+        { "name": "failedFixes", "type": "uint256" }
+      ],
+      "outputs": []
+    }
+  ]
+}

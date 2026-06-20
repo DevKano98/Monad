@@ -1,0 +1,35 @@
+{
+  "abi": [
+    {
+      "type": "function",
+      "name": "updateReputation",
+      "stateMutability": "nonpayable",
+      "inputs": [
+        { "name": "wallet", "type": "address" },
+        { "name": "score", "type": "int256" },
+        { "name": "successfulFixes", "type": "uint256" },
+        { "name": "failedFixes", "type": "uint256" }
+      ],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "getReputation",
+      "stateMutability": "view",
+      "inputs": [{ "name": "wallet", "type": "address" }],
+      "outputs": [
+        {
+          "components": [
+            { "name": "wallet", "type": "address" },
+            { "name": "score", "type": "int256" },
+            { "name": "successfulFixes", "type": "uint256" },
+            { "name": "failedFixes", "type": "uint256" },
+            { "name": "updatedAt", "type": "uint256" }
+          ],
+          "name": "",
+          "type": "tuple"
+        }
+      ]
+    }
+  ]
+}
