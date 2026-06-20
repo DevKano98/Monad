@@ -48,6 +48,8 @@ class X402Verifier:
             "premium-feed": settings.x402_premium_feed_price,
             "advanced-search": settings.x402_advanced_search_price,
             "reputation-analytics": settings.x402_reputation_analytics_price,
+            "submit-fix": settings.x402_submit_fix_price,
+            "vote-fix": settings.x402_vote_fix_price,
         }
         return prices[feature]
 

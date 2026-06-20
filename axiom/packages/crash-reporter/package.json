@@ -1,0 +1,12 @@
+{
+  "name": "@axiom/crash-reporter",
+  "version": "0.1.0",
+  "description": "Axiom crash reporter for Node runtimes",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  }
+}

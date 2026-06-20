@@ -23,3 +23,8 @@ def test_x402_rejects_missing_receipt() -> None:
     with pytest.raises(HTTPException) as exc:
         verifier.verify("reputation-analytics", None)
     assert exc.value.status_code == 402
+
+
+def test_x402_supports_fix_features() -> None:
+    assert verifier.price_for("submit-fix") == settings.x402_submit_fix_price
+    assert verifier.price_for("vote-fix") == settings.x402_vote_fix_price

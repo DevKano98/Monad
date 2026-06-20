@@ -1,9 +1,10 @@
-import { Activity, Gauge, ShieldCheck, Wrench } from "lucide-react";
+import { Activity, Gauge, Map, ShieldCheck, Wrench } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 const links = [
   { to: "/", label: "Dashboard", icon: Gauge },
   { to: "/feed", label: "Feed", icon: Activity },
+  { to: "/map", label: "Map", icon: Map },
   { to: "/incidents", label: "Incidents", icon: Wrench },
   { to: "/reputation", label: "Reputation", icon: ShieldCheck }
 ];

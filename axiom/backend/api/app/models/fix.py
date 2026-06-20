@@ -16,6 +16,7 @@ class Fix(BaseModel):
     title: Mapped[str] = mapped_column(String(255), nullable=False)
     description: Mapped[str] = mapped_column(Text, nullable=False)
     wallet_address: Mapped[str] = mapped_column(String(255), nullable=False)
+    onchain_fix_id: Mapped[int | None] = mapped_column(Integer)
     upvotes: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
     downvotes: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
     reputation_score: Mapped[float] = mapped_column(Float, default=0.0, nullable=False)

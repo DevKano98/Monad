@@ -10,24 +10,18 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  redis:
-    image: redis:7-alpine
-    ports:
-      - "6379:6379"
-
   api:
     build:
       context: ./backend/api
     environment:
       DATABASE_URL: postgresql+asyncpg://axiom:axiom@postgres:5432/axiom
-      REDIS_URL: redis://redis:6379/0
-      CELERY_BROKER_URL: redis://redis:6379/1
-      CELERY_RESULT_BACKEND: redis://redis:6379/2
+      REDIS_URL: ${REDIS_URL}
+      CELERY_BROKER_URL: ${CELERY_BROKER_URL}
+      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND}
     ports:
       - "8000:8000"
     depends_on:
       - postgres
-      - redis
 
   web:
     image: node:20-alpine

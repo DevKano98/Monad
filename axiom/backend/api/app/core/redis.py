@@ -13,6 +13,9 @@ redis_client: Any | None = None
 
 async def init_redis() -> None:
     global redis_client
+    if settings.redis_url.startswith("memory://"):
+        redis_client = InMemoryRedis()
+        return
     if Redis is None:
         redis_client = InMemoryRedis()
         return
@@ -27,6 +30,8 @@ async def close_redis() -> None:
 
 def get_redis() -> Any:
     if redis_client is None:
+        if settings.redis_url.startswith("memory://"):
+            return InMemoryRedis()
         if Redis is None:
             return InMemoryRedis()
         return Redis.from_url(settings.redis_url, decode_responses=True)

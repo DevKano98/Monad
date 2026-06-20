@@ -14,6 +14,7 @@ export function useSocket() {
       const event = JSON.parse(message.data) as { event: string };
       setLastEvent(event.event);
       void queryClient.invalidateQueries({ queryKey: ["feed"] });
+      void queryClient.invalidateQueries({ queryKey: ["crash-map"] });
       void queryClient.invalidateQueries({ queryKey: ["incidents"] });
     };
     return () => socket.close();

@@ -20,10 +20,16 @@ class FingerprintService:
         existing = await self.repository.get_by_hash(payload.hash)
         if existing is not None:
             raise conflict("Fingerprint hash already exists")
-        fingerprint = await self.repository.create(payload.model_dump())
+        tx = await self.blockchain.publish_fingerprint(payload.model_dump())
+        fingerprint = await self.repository.create(payload.model_dump() | {"monad_tx_hash": tx["tx_hash"]})
         await self.websocket.broadcast(
-            "fingerprint.created",
-            {"id": str(fingerprint.id), "hash": fingerprint.hash, "severity": fingerprint.severity},
+            "fingerprint.published",
+            {
+                "id": str(fingerprint.id),
+                "fingerprint_hash": fingerprint.hash,
+                "severity": fingerprint.severity,
+                "tx_hash": fingerprint.monad_tx_hash,
+            },
         )
         return fingerprint
 

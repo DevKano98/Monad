@@ -1,0 +1,26 @@
+{
+  "name": "@axiom/mcp",
+  "version": "0.1.0",
+  "description": "Axiom MCP client tools for failure lookup and fix reputation",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./index.js",
+    "./server": "./server.js"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "bin": {
+    "axiom-mcp": "./server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^4.4.3"
+  }
+}

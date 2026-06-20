@@ -10,6 +10,7 @@ router = APIRouter()
 
 class PublishFingerprintRequest(BaseModel):
     hash: str
+    error_type: str = "UnknownError"
     language: str
     framework: str
     severity: str

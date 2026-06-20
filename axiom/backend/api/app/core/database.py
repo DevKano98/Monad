@@ -18,7 +18,17 @@ async_session_maker: async_sessionmaker[AsyncSession] | None = None
 def get_engine() -> AsyncEngine:
     global engine
     if engine is None:
-        engine = create_async_engine(settings.database_url, pool_pre_ping=True, echo=settings.debug)
+        database_url = settings.database_url
+        connect_args: dict[str, object] = {}
+        if "sslmode=require" in database_url:
+            database_url = database_url.replace("?sslmode=require", "").replace("&sslmode=require", "")
+            connect_args["ssl"] = True
+        engine = create_async_engine(
+            database_url,
+            pool_pre_ping=True,
+            echo=settings.debug,
+            connect_args=connect_args,
+        )
     return engine
 
 
@@ -30,7 +40,7 @@ def get_session_maker() -> async_sessionmaker[AsyncSession]:
 
 
 async def init_db() -> None:
-    from app.models import fingerprint, fix, incident, reputation  # noqa: F401
+    from app.models import crash_map, fingerprint, fix, incident, reputation  # noqa: F401
 
     async with get_engine().begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
@@ -42,5 +52,5 @@ async def close_db() -> None:
 
 
 async def get_db() -> AsyncGenerator[AsyncSession, None]:
-    async with get_session_maker() as session:
+    async with get_session_maker()() as session:
         yield session

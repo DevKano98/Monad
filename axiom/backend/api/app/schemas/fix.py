@@ -8,7 +8,7 @@ class FixCreate(BaseModel):
     fingerprint_id: UUID
     title: str = Field(min_length=3, max_length=255)
     description: str = Field(min_length=3)
-    wallet_address: str = Field(min_length=10, max_length=255)
+    wallet_address: str | None = Field(default=None, min_length=10, max_length=255)
 
 
 class FixVote(BaseModel):
@@ -18,6 +18,8 @@ class FixVote(BaseModel):
 
 class FixRead(FixCreate):
     id: UUID
+    wallet_address: str
+    onchain_fix_id: int | None
     upvotes: int
     downvotes: int
     reputation_score: float

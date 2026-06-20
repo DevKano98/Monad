@@ -18,7 +18,12 @@ class ReputationRepository(Repository[Reputation]):
     async def upsert_vote(self, wallet_address: str, successful: bool) -> Reputation:
         reputation = await self.get_by_wallet(wallet_address)
         if reputation is None:
-            reputation = Reputation(wallet_address=wallet_address.lower())
+            reputation = Reputation(
+                wallet_address=wallet_address.lower(),
+                successful_fixes=0,
+                failed_fixes=0,
+                total_score=0.0,
+            )
             self.session.add(reputation)
         if successful:
             reputation.successful_fixes += 1
