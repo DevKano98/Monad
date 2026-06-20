@@ -1,7 +1,6 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { createServer } from "node:http";
-import { randomUUID } from "node:crypto";
 import { z } from "zod";
 
 const DEFAULT_API_URL = "http://localhost:8000";
@@ -151,12 +150,6 @@ export async function startAxiomMcpHttpServer(options = {}) {
   const host = options.host ?? process.env.AXIOM_MCP_HOST ?? "0.0.0.0";
   const port = Number(options.port ?? process.env.AXIOM_MCP_PORT ?? process.env.PORT ?? 3333);
   const path = normalizePath(options.path ?? process.env.AXIOM_MCP_PATH ?? "/mcp");
-  const server = createAxiomMcpServer(options);
-  const transport = new StreamableHTTPServerTransport({
-    sessionIdGenerator: () => randomUUID(),
-  });
-
-  await server.connect(transport);
 
   const httpServer = createServer(async (req, res) => {
     const requestUrl = req.url ? new URL(req.url, `http://${req.headers.host ?? host}`) : null;
@@ -173,6 +166,14 @@ export async function startAxiomMcpHttpServer(options = {}) {
     }
 
     const body = await readRequestBody(req);
+    // Create a fresh MCP transport/server per request so public HTTP clients
+    // can open independent sessions without colliding on one in-memory session.
+    const server = createAxiomMcpServer(options);
+    const transport = new StreamableHTTPServerTransport({
+      sessionIdGenerator: undefined,
+    });
+
+    await server.connect(transport);
     await transport.handleRequest(req, res, body);
   });
 
@@ -182,8 +183,6 @@ export async function startAxiomMcpHttpServer(options = {}) {
 
   return {
     httpServer,
-    transport,
-    server,
     url: `http://${host}:${port}${path}`,
   };
 }
