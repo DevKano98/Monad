@@ -1,4 +1,16 @@
-CREATE EXTENSION IF NOT EXISTS pgcrypto;
+CREATE OR REPLACE FUNCTION gen_random_uuid()
+RETURNS UUID
+LANGUAGE sql
+VOLATILE
+AS $$
+    SELECT (
+        substr(md5(random()::text || clock_timestamp()::text), 1, 8) || '-' ||
+        substr(md5(random()::text || clock_timestamp()::text), 9, 4) || '-' ||
+        substr(md5(random()::text || clock_timestamp()::text), 13, 4) || '-' ||
+        substr(md5(random()::text || clock_timestamp()::text), 17, 4) || '-' ||
+        substr(md5(random()::text || clock_timestamp()::text), 21, 12)
+    )::uuid;
+$$;
 
 CREATE TYPE incident_severity AS ENUM ('critical', 'high', 'medium', 'low');
 CREATE TYPE incident_status AS ENUM ('open', 'investigating', 'resolved');

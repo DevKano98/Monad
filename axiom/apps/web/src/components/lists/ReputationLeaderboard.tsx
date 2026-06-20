@@ -8,13 +8,13 @@ const data = [
 
 export function ReputationLeaderboard() {
   return (
-    <div className="h-72 rounded-md border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
-      <h3 className="mb-4 font-semibold">Trust score leaders</h3>
+    <div className="h-72 rounded-[28px] border border-black/5 bg-white/85 p-5 shadow-[0_18px_50px_rgba(17,24,39,0.06)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.03]">
+      <h3 className="mb-4 text-base font-semibold tracking-[-0.01em] text-ink dark:text-white">Trust score leaders</h3>
       <ResponsiveContainer width="100%" height="85%">
         <BarChart data={data}>
           <XAxis dataKey="name" />
           <YAxis />
-          <Bar dataKey="score" fill="#0f766e" radius={[4, 4, 0, 0]} />
+          <Bar dataKey="score" fill="#494fdf" radius={[10, 10, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>

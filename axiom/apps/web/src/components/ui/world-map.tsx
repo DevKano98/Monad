@@ -45,10 +45,11 @@ export default function WorldMap({
   };
 
   return (
-    <div className="w-full aspect-[2/1] dark:bg-black bg-white rounded-lg  relative font-sans">
+    <div className="relative aspect-[2/1] w-full overflow-hidden rounded-[28px] bg-white font-sans dark:bg-[#050608]">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(73,79,223,0.18),_transparent_32%),radial-gradient(circle_at_bottom_right,_rgba(230,30,73,0.08),_transparent_30%)] dark:bg-[radial-gradient(circle_at_top_left,_rgba(73,79,223,0.2),_transparent_32%),radial-gradient(circle_at_bottom_right,_rgba(230,30,73,0.12),_transparent_30%)]" />
       <img
         src={`data:image/svg+xml;utf8,${encodeURIComponent(svgMap)}`}
-        className="h-full w-full [mask-image:linear-gradient(to_bottom,transparent,white_10%,white_90%,transparent)] pointer-events-none select-none"
+        className="pointer-events-none h-full w-full select-none [mask-image:linear-gradient(to_bottom,transparent,white_10%,white_90%,transparent)]"
         alt="world map"
         height="495"
         width="1056"
@@ -57,7 +58,7 @@ export default function WorldMap({
       <svg
         ref={svgRef}
         viewBox="0 0 800 400"
-        className="w-full h-full absolute inset-0 pointer-events-none select-none"
+        className="pointer-events-none absolute inset-0 h-full w-full select-none"
       >
         {dots.map((dot, i) => {
           const startPoint = projectPoint(dot.start.lat, dot.start.lng);

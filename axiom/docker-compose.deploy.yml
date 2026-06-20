@@ -1,0 +1,66 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: axiom
+      POSTGRES_USER: axiom
+      POSTGRES_PASSWORD: axiom
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  api:
+    build:
+      context: ./backend/api
+    environment:
+      DATABASE_URL: postgresql+asyncpg://axiom:axiom@postgres:5432/axiom
+      REDIS_URL: redis://redis:6379/0
+      CELERY_BROKER_URL: redis://redis:6379/1
+      CELERY_RESULT_BACKEND: redis://redis:6379/2
+      GROQ_API_KEY: ${GROQ_API_KEY:-}
+      MONAD_RPC_URL: ${MONAD_RPC_URL:-https://testnet-rpc.monad.xyz}
+      MONAD_CHAIN_ID: ${MONAD_CHAIN_ID:-10143}
+      PRIVATE_KEY: ${PRIVATE_KEY}
+      FINGERPRINT_REGISTRY_ADDRESS: ${FINGERPRINT_REGISTRY_ADDRESS}
+      REPUTATION_REGISTRY_ADDRESS: ${REPUTATION_REGISTRY_ADDRESS}
+      MONAD_PRIORITY_FEE_GWEI: ${MONAD_PRIORITY_FEE_GWEI:-2}
+      PROJECT_KEYS: ${PROJECT_KEYS:-axiom_pk_demo}
+      X402_PAY_TO_ADDRESS: ${X402_PAY_TO_ADDRESS}
+      X402_SUBMIT_FIX_PRICE: ${X402_SUBMIT_FIX_PRICE:-0.01}
+      X402_VOTE_FIX_PRICE: ${X402_VOTE_FIX_PRICE:-0.005}
+      CORS_ORIGINS: ${CORS_ORIGINS:-["*"]}
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - redis
+    restart: unless-stopped
+
+  mcp:
+    build:
+      context: ./packages/mcp
+    environment:
+      AXIOM_MCP_TRANSPORT: http
+      AXIOM_API_URL: http://api:8000
+      AXIOM_MCP_HOST: 0.0.0.0
+      AXIOM_MCP_PATH: /mcp
+      AXIOM_PAYMENT_HEADER: ${AXIOM_PAYMENT_HEADER:-}
+      PORT: 3333
+    ports:
+      - "3333:3333"
+    depends_on:
+      - api
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:

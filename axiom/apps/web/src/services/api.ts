@@ -14,6 +14,14 @@ export async function request<T>(path: string, init?: RequestInit): Promise<T> {
 
 export { API_URL };
 
+export function isMockDataEnabled() {
+  return normalizeBoolean(import.meta.env.VITE_SHOW_MOCK_DATA);
+}
+
 function normalizeApiUrl(url: string) {
   return url.replace(/\/+$/, "").replace(/\/v1$/, "");
+}
+
+function normalizeBoolean(value: string | undefined) {
+  return value ? ["1", "true", "yes", "on"].includes(value.toLowerCase()) : false;
 }

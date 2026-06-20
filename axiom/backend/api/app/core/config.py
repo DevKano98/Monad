@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     celery_broker_url: str = "rediss://default:YOUR_UPSTASH_PASSWORD@YOUR_UPSTASH_HOST:YOUR_UPSTASH_PORT/1"
     celery_result_backend: str = "rediss://default:YOUR_UPSTASH_PASSWORD@YOUR_UPSTASH_HOST:YOUR_UPSTASH_PORT/2"
     cors_origins: list[str] = Field(
-        default_factory=lambda: ["http://localhost:5173", "http://127.0.0.1:5173"]
+        default_factory=lambda: ["*"]
     )
     groq_api_key: str | None = None
     groq_model: str = "llama-3.1-8b-instant"
@@ -54,7 +54,14 @@ class Settings(BaseSettings):
                 parsed = json.loads(text)
                 return [str(item).strip() for item in parsed if str(item).strip()]
             return [item.strip() for item in text.split(",") if item.strip()]
-        return value
+        if isinstance(value, list):
+            normalized = [str(item).strip() for item in value if str(item).strip()]
+            return normalized or ["*"]
+        return ["*"]
+
+    @property
+    def allow_all_origins(self) -> bool:
+        return "*" in self.cors_origins
 
     def is_valid_project_key(self, value: str) -> bool:
         keys = {key.strip() for key in self.project_keys.split(",") if key.strip()}

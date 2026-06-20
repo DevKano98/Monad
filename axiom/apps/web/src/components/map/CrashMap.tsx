@@ -62,46 +62,64 @@ export function CrashMap({ points, compact = false }: { points: CrashMapPoint[];
   }, [darkMode, points]);
 
   return (
-    <div className={compact ? "overflow-hidden rounded-[28px]" : "grid gap-4 lg:grid-cols-[1fr_280px]"}>
-      <WorldMap dots={dots} lineColor={lineColor} theme={darkMode ? "dark" : "light"} />
+    <div className={compact ? "overflow-hidden rounded-[28px]" : "grid gap-6 xl:grid-cols-[minmax(0,1.5fr)_320px]"}>
+      <div className="rounded-[32px] border border-black/5 bg-white p-3 shadow-[0_24px_80px_rgba(17,24,39,0.08)] dark:border-white/10 dark:bg-white/[0.03]">
+        <WorldMap dots={dots} lineColor={lineColor} theme={darkMode ? "dark" : "light"} />
+      </div>
       {!compact ? (
-        <aside className="rounded-[28px] border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
-          <div className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-400">Approximate locations</div>
+        <aside className="rounded-[32px] border border-black/5 bg-white/85 p-5 shadow-[0_24px_80px_rgba(17,24,39,0.08)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.03]">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">Approximate locations</div>
+              <div className="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">
+                The latest five signals, ranked by severity and resolved from region or coordinate hints.
+              </div>
+            </div>
+            <div className="rounded-full border border-black/5 bg-[#494fdf]/8 px-3 py-1 text-xs font-semibold text-[#494fdf] dark:border-white/10 dark:bg-white/[0.04] dark:text-white/80">
+              {points.length} live
+            </div>
+          </div>
           <div className="mt-4 grid gap-3">
             {points.length === 0 ? (
-              <div className="rounded-2xl border border-dashed border-slate-200 p-4 text-sm text-slate-500 dark:border-slate-800">
+              <div className="rounded-3xl border border-dashed border-black/10 bg-slate-50/80 p-5 text-sm text-slate-500 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-400">
                 Waiting for the first ingest event.
               </div>
             ) : (
               points.slice(0, 5).map((point) => {
                 const resolved = resolvePoint(point);
                 return (
-                  <div key={point.id} className="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950/50">
+                  <div
+                    key={point.id}
+                    className="rounded-3xl border border-black/5 bg-slate-50/80 p-4 shadow-[0_12px_30px_rgba(17,24,39,0.04)] dark:border-white/10 dark:bg-slate-950/40"
+                  >
                     <div className="flex items-start justify-between gap-3">
                       <div>
-                        <div className="text-sm font-semibold text-slate-900 dark:text-slate-100">{point.error_type}</div>
+                        <div className="text-sm font-semibold tracking-[-0.01em] text-ink dark:text-slate-100">{point.error_type}</div>
                         <div className="mt-1 text-xs text-slate-500">
                           {point.region} {point.country ? `· ${point.country}` : ""}
                         </div>
                       </div>
                       <span
                         className="rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em]"
-                        style={{ color: LINE_COLORS[point.severity], backgroundColor: `${LINE_COLORS[point.severity]}18` }}
+                        style={{
+                          color: LINE_COLORS[point.severity],
+                          backgroundColor: `${LINE_COLORS[point.severity]}18`
+                        }}
                       >
                         {point.severity}
                       </span>
                     </div>
                     <div className="mt-3 grid grid-cols-2 gap-2 text-xs text-slate-500">
-                      <div>
+                      <div className="rounded-2xl bg-white/80 px-3 py-2 dark:bg-white/[0.03]">
                         <div className="uppercase tracking-[0.22em] text-slate-400">Matches</div>
-                        <div className="mt-1 text-sm text-slate-900 dark:text-slate-100">{point.match_count}</div>
+                        <div className="mt-1 text-sm font-medium text-ink dark:text-slate-100">{point.match_count}</div>
                       </div>
-                      <div>
+                      <div className="rounded-2xl bg-white/80 px-3 py-2 dark:bg-white/[0.03]">
                         <div className="uppercase tracking-[0.22em] text-slate-400">Fixes</div>
-                        <div className="mt-1 text-sm text-slate-900 dark:text-slate-100">{point.known_fix_count}</div>
+                        <div className="mt-1 text-sm font-medium text-ink dark:text-slate-100">{point.known_fix_count}</div>
                       </div>
                     </div>
-                    <div className="mt-3 text-xs leading-5 text-slate-500">
+                    <div className="mt-3 text-xs leading-5 text-slate-500 dark:text-slate-400">
                       {formatLocation(resolved)}
                     </div>
                   </div>
