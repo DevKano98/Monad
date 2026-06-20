@@ -1,4 +1,5 @@
 import { Contract, JsonRpcProvider, Wallet } from "ethers";
+import type { InterfaceAbi } from "ethers";
 
 export class MonadSDK {
   private provider: JsonRpcProvider;
@@ -13,11 +14,11 @@ export class MonadSDK {
     return this.provider.getBlockNumber();
   }
 
-  fingerprintRegistry(address: string, abi: unknown[]): Contract {
+  fingerprintRegistry(address: string, abi: InterfaceAbi): Contract {
     return new Contract(address, abi, this.signer ?? this.provider);
   }
 
-  reputationRegistry(address: string, abi: unknown[]): Contract {
+  reputationRegistry(address: string, abi: InterfaceAbi): Contract {
     return new Contract(address, abi, this.signer ?? this.provider);
   }
 }

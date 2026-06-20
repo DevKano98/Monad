@@ -5,8 +5,12 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch"
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsc -p tsconfig.json --watch",
+    "prepack": "npm run build"
   },
+  "files": [
+    "dist"
+  ],
   "dependencies": {}
 }
