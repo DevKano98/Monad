@@ -12,9 +12,7 @@ When one application discovers a new failure, every subscribed service gains the
   <img src=".github/landing.png" alt="Axiom Landing Page" width="100%" />
 </p>
 
-<p align="center">
-  <img src=".github/dashboard.png" alt="Axiom Dashboard" width="100%" />
-</p>
+
 
 ## High-Level System Architecture
 
