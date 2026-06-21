@@ -9,7 +9,7 @@ When one application discovers a new failure, every subscribed service gains the
 ## Platform
 
 <p align="center">
-  <img src=".github/landing.png" alt="Axiom Landing Page" width="100%" />
+  <img src="axiom/.github/landing.png" alt="Axiom Landing Page" width="100%" />
 </p>
 
 
